@@ -1,0 +1,49 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="simple_api.response_converter_class">Betsol\Bundle\SimpleApiBundle\ResponseConverter</parameter>
+        <parameter key="simple_api.listener_class">Betsol\Bundle\SimpleApiBundle\EventListener\EventListener</parameter>
+        <parameter key="simple_api.view_listener_class">Betsol\Bundle\SimpleApiBundle\EventListener\ViewEventListener</parameter>
+        <parameter key="simple_api.exception_listener_class">Betsol\Bundle\SimpleApiBundle\EventListener\ExceptionEventListener</parameter>
+        <parameter key="simple_api.enable_for_all_controllers" />
+    </parameters>
+
+    <services>
+
+        <service id="simple_api.serializer" alias="jms_serializer" />
+
+        <service id="simple_api.response_converter" class="%simple_api.response_converter_class%">
+            <argument type="service" id="simple_api.serializer" />
+        </service>
+
+        <!-- Parent service for kernel event listeners -->
+        <service id="simple_api.event_listener" class="%simple_api.listener_class%" abstract="true">
+            <argument type="service" id="simple_api.response_converter" />
+            <call method="setEnabledForAllControllers">
+                <argument>%simple_api.enable_for_all_controllers%</argument>
+            </call>
+        </service>
+
+        <!-- View kernel event listener -->
+        <service
+            id="simple_api.event_listener.view"
+            class="%simple_api.view_listener_class%"
+            parent="simple_api.event_listener"
+        >
+            <tag name="kernel.event_listener" event="kernel.view" method="onKernelView" />
+        </service>
+
+        <!-- Exception kernel event listener -->
+        <service
+            id="simple_api.event_listener.exception"
+            class="%simple_api.exception_listener_class%"
+            parent="simple_api.event_listener"
+        >
+            <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" />
+        </service>
+
+    </services>
+
+</container>

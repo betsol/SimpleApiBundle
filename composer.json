@@ -1,0 +1,30 @@
+{
+    "name": "betsol/simple-api-bundle",
+    "type": "symfony-bundle",
+    "description": "Simple API bundle for Symfony",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Slava Fomin II",
+            "email": "s.fomin@betsol.ru"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "symfony/framework-bundle": "~2.2",
+        "jms/serializer-bundle": "~0"
+    },
+    "require-dev": {
+        "symfony/dependency-injection": "~2.0",
+        "symfony/config": "~2.2",
+        "symfony/framework-bundle": "~2.1"
+    },
+    "suggest": {
+        "sensio/framework-extra-bundle": "Adds support for controller annotations"
+    },
+    "autoload": {
+        "psr-0": { "Betsol\\Bundle\\SimpleApiBundle\\": "" }
+    },
+    "target-dir": "Betsol/Bundle/SimpleApiBundle",
+    "minimum-stability": "dev"
+}
